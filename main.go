@@ -120,6 +120,21 @@ func main() {
 					}
 				}
 
+			// drop number of stack
+			case 'd':
+				pop()
+
+			// swap last two numbers on stack
+			case 's':
+				t := pop()
+				t2 := pop()
+				push(t)
+				push(t2)
+
+			// clear stack
+			case 'c':
+				stack = nil
+
 			case 0:
 				switch ev.Key {
 				case termbox.KeyBackspace, termbox.KeyBackspace2:
