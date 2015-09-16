@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/nsf/termbox-go"
+	"math"
 	"strconv"
 )
 
@@ -116,6 +117,18 @@ func main() {
 					num, err := strconv.ParseFloat(string(buffer), 64)
 					if err == nil {
 						push(pop() / num)
+						buffer = nil
+					}
+				}
+
+			case '^':
+				if len(buffer) == 0 {
+					t := pop()
+					push(math.Pow(pop(), t))
+				} else {
+					num, err := strconv.ParseFloat(string(buffer), 64)
+					if err == nil {
+						push(math.Pow(pop(), num))
 						buffer = nil
 					}
 				}
