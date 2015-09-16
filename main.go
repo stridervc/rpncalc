@@ -59,10 +59,6 @@ var buffer []rune
 var stack []float64
 
 func main() {
-	var num float64 // current number
-
-	num = 0
-
 	err := termbox.Init()
 	if err != nil {
 		panic(err)
@@ -78,23 +74,51 @@ func main() {
 			case 'q':
 				done = true
 
-			case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
-				num = num*10 + float64(ev.Ch-'0')
-				buffer = append(buffer, ev.Ch)
-
 			case '+':
-				push(pop() + pop())
+				if len(buffer) == 0 {
+					push(pop() + pop())
+				} else {
+					num, err := strconv.ParseFloat(string(buffer), 64)
+					if err == nil {
+						push(pop() + num)
+						buffer = nil
+					}
+				}
 
 			case '-':
-				t := pop()
-				push(pop() - t)
+				if len(buffer) == 0 {
+					t := pop()
+					push(pop() - t)
+				} else {
+					num, err := strconv.ParseFloat(string(buffer), 64)
+					if err == nil {
+						push(pop() - num)
+						buffer = nil
+					}
+				}
 
 			case '*':
-				push(pop() * pop())
+				if len(buffer) == 0 {
+					push(pop() * pop())
+				} else {
+					num, err := strconv.ParseFloat(string(buffer), 64)
+					if err == nil {
+						push(pop() * num)
+						buffer = nil
+					}
+				}
 
 			case '/':
-				t := pop()
-				push(pop() / t)
+				if len(buffer) == 0 {
+					t := pop()
+					push(pop() / t)
+				} else {
+					num, err := strconv.ParseFloat(string(buffer), 64)
+					if err == nil {
+						push(pop() / num)
+						buffer = nil
+					}
+				}
 
 			case 0:
 				switch ev.Key {
@@ -104,14 +128,20 @@ func main() {
 					}
 
 				case termbox.KeyEnter:
-					// if buffer is empty, push the last value again
+					// if buffer is empty, push last number again
 					if len(buffer) == 0 {
-						num = pop()
-						push(num)
+						if len(stack) > 0 {
+							t := pop()
+							push(t)
+							push(t)
+						}
+					} else {
+						num, err := strconv.ParseFloat(string(buffer), 64)
+						if err == nil {
+							push(num)
+							buffer = nil
+						}
 					}
-					push(num)
-					num = 0
-					buffer = nil
 				}
 
 			default:
