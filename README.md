@@ -19,8 +19,9 @@ more information.
 
 Usage
 -----
-Type a number and press <Enter> to push it onto the stack.
-Other keys are
+Type a number and press Enter to push it onto the stack.
+
+Other keys are:
 * '+' : Add
 * '-' : Subtract
 * '\*' : Multiply
