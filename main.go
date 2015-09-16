@@ -148,6 +148,10 @@ func main() {
 			case 'c':
 				stack = nil
 
+			// negate last number on stack
+			case 'n':
+				push(pop() * -1)
+
 			case 0:
 				switch ev.Key {
 				case termbox.KeyBackspace, termbox.KeyBackspace2:
